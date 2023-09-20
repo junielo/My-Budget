@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { User } from '../../../entities/user.entity';
 
@@ -6,6 +6,14 @@ import { User } from '../../../entities/user.entity';
 export class UserService {
     constructor(
         @Inject('USER_REPOSITORY')
-        private photoRepository: Repository<User>,
+        private userRepository: Repository<User>,
       ) {}
+
+      async findAll() {
+        const users = await this.userRepository.find();
+        if (!users) {
+          return BadRequestException;
+        }
+        return users;
+      }
 }
