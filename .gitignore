@@ -131,4 +131,7 @@ dist
 
 .nx/installation
 .nx/cache
+.nx/cache
+.angular
+.vscode
 .angular
