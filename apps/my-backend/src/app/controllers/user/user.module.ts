@@ -9,6 +9,7 @@ import { UserAuthMiddleware } from '../../middlewares/user-auth.middleware';
   imports: [DatabaseModule],
   providers: [...userProviders, UserService],
   controllers: [UserController],
+  exports: [UserService],
 })
 export class UserModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

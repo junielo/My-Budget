@@ -12,6 +12,14 @@ export class UserController {
     @Get()
     async findAll() {
         const users = await this.userService.findAll()
-        return users
+        if(!users) {
+            return users
+        }
+        const filtered = (users as User[]).map(user => {
+            const { hash_password, ...result } = user;
+            return result;
+        })
+        
+        return filtered
     }
 }
