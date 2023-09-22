@@ -21,18 +21,30 @@ export class UserService {
     return users;
   }
 
-  async findOne(username: string) 
+  async findbyID(id: number) 
   {
-    const users = await this.userRepository.find({
+    const users = await this.userRepository.findOne({
       where: {
-        username: username,
+        id: id,
       },
-      take: 1,
     });
     if (!users) {
       return BadRequestException;
     }
-    return users[0];
+    return users;
+  }
+
+  async findOne(username: string) 
+  {
+    const users = await this.userRepository.findOne({
+      where: {
+        username: username,
+      },
+    });
+    if (!users) {
+      return BadRequestException;
+    }
+    return users;
   }
 
   async create(user: CreateCustomerDTO) 
