@@ -1,6 +1,7 @@
-import { Controller, Get } from '@nestjs/common';
+import { BadGatewayException, Body, Controller, Get, Post } from '@nestjs/common';
 import { UserService } from '../service/user.service';
 import { User } from '../../../entities/user.entity';
+import { CreateCustomerDTO } from '../../../dto/create-customer.dto';
 
 @Controller('user')
 export class UserController {
@@ -21,5 +22,14 @@ export class UserController {
         })
         
         return filtered
+    }
+
+    @Post('create')
+    async create(@Body() customer: CreateCustomerDTO) {
+        const saved = await this.userService.create(customer)
+        if(!saved) {
+            return BadGatewayException
+        }
+        return 'User created successfully';
     }
 }

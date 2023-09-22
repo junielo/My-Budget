@@ -2,6 +2,7 @@ import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { User } from '../../../entities/user.entity';
 import { retry } from 'rxjs';
+import { CreateCustomerDTO } from '../../../dto/create-customer.dto';
 
 @Injectable()
 export class UserService {
@@ -10,7 +11,8 @@ export class UserService {
     private userRepository: Repository<User>,
   ) { }
 
-  async findAll() {
+  async findAll() 
+  {
     const users = await this.userRepository.find();
     if (!users) {
       return BadRequestException;
@@ -18,7 +20,8 @@ export class UserService {
     return users;
   }
 
-  async findOne(username: string) {
+  async findOne(username: string) 
+  {
     const users = await this.userRepository.find({
       where: {
         username: username,
@@ -30,4 +33,12 @@ export class UserService {
     }
     return users[0];
   }
+
+  async create(user: CreateCustomerDTO) 
+  {
+    const newUser = await this.userRepository.create(user);
+    await this.userRepository.save(newUser);
+    return newUser;
+  }
+
 }
