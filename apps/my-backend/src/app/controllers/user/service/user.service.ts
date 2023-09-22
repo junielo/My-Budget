@@ -3,6 +3,7 @@ import { Repository } from 'typeorm';
 import { User } from '../../../entities/user.entity';
 import { retry } from 'rxjs';
 import { CreateCustomerDTO } from '../../../dto/create-customer.dto';
+import { encryptPassword } from '../../../utils/bcrypt';
 
 @Injectable()
 export class UserService {
@@ -36,7 +37,8 @@ export class UserService {
 
   async create(user: CreateCustomerDTO) 
   {
-    const newUser = await this.userRepository.create(user);
+    const hash_password = encryptPassword(user.hash_password);
+    const newUser = await this.userRepository.create({...user, hash_password});
     await this.userRepository.save(newUser);
     return newUser;
   }
